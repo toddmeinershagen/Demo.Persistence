@@ -3,6 +3,7 @@ using Demo.Persistence.TableStorage;
 using Demo.Persistence.TableStorage.Commands;
 using Demo.Persistence.TableStorage.Queries;
 using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,7 +14,12 @@ namespace Demo.Persistence.CommandLine
     {
         static async Task Main(string[] args)
         {
-            var repository = GetRepository();
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
+            var repository = GetRepository(configuration["AzureStorage"]);
 
             var reminderTypes = await repository.FindAsync(new AllReminderTypes());
             await RenderAsync(reminderTypes);
@@ -33,9 +39,8 @@ namespace Demo.Persistence.CommandLine
             await RenderAsync(reminderTypes);
         }
 
-        static IRepository<CloudTable> GetRepository()
+        static IRepository<CloudTable> GetRepository(string connectionString)
         {
-            var connectionString = "DefaultEndpointsProtocol=https;AccountName=demostoragepersistencesa;AccountKey=1d1rgyNZvFXQGnxCsIoja3Y5Q4j4xfBUJ7FXpWg/tVeneF91ulSnrE+87tlIYNiETGFNHY3hSg3NwLSNiCDYGA==;EndpointSuffix=core.windows.net";
             var options = new TableStorageOptions();
             var repository = new TableStorageRepository(connectionString, options);
             return repository;
