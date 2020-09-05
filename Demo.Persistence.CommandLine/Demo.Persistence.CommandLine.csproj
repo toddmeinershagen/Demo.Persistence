@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.Persistence.Core\Demo.Persistence.Core.csproj" />
+    <ProjectReference Include="..\Demo.Persistence.TableStorage\Demo.Persistence.TableStorage.csproj" />
+  </ItemGroup>
+
+</Project>
