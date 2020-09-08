@@ -10,10 +10,12 @@ namespace Demo.Persistence.TableStorage
     public class TableStorageRepository : IRepository<CloudTable>
     {
         private readonly CloudStorageAccount _account;
+        private readonly TableStorageOptions _options;
 
         public TableStorageRepository(string connectionString, TableStorageOptions options)
         {
             _account = CreateStorageAccountFromConnectionString(connectionString, options);
+            _options = options;
         }
 
         public async Task ExecuteAsync<T>(ICommand<CloudTable, T> command)
@@ -68,7 +70,11 @@ namespace Demo.Persistence.TableStorage
             var table = tableClient.GetTableReference(tableName);
 
             //TODO:  make this an option
-            await table.CreateIfNotExistsAsync();
+            if (_options.EnsureTableExists)
+            {
+                await table.CreateIfNotExistsAsync();
+            }
+
             return table;
         }
     }
