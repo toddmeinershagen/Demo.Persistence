@@ -4,6 +4,7 @@ using Demo.Persistence.TableStorage.Commands;
 using Demo.Persistence.TableStorage.Queries;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -58,7 +59,10 @@ namespace Demo.Persistence.CommandLine
         static async Task RenderAsync(ReminderType reminderType)
         {
             if (reminderType != null)
-                await Console.Out.WriteLineAsync($"{reminderType.ClientId}:  {reminderType.Id} - {reminderType.Name}");
+            {
+                var json = JsonConvert.SerializeObject(reminderType);
+                await Console.Out.WriteLineAsync(json);
+            }
         }
     }
 }
