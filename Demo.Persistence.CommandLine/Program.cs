@@ -31,7 +31,8 @@ namespace Demo.Persistence.CommandLine
             {
                 ClientId = 1203,
                 Id = Guid.NewGuid(),
-                Name = $"Test Reminder Type {Guid.NewGuid().GetHashCode()}"
+                Name = $"Test Reminder Type {Guid.NewGuid().GetHashCode()}",
+                Tags = new List<string> { "test", "todd", "meinershagen"}
             };
             await repository.ExecuteAsync(new AddOrUpdateReminderType(newReminderType));
 
@@ -56,7 +57,8 @@ namespace Demo.Persistence.CommandLine
 
         static async Task RenderAsync(ReminderType reminderType)
         {
-            await Console.Out.WriteLineAsync($"{reminderType.ClientId}:  {reminderType.Id} - {reminderType.Name}");
+            if (reminderType != null)
+                await Console.Out.WriteLineAsync($"{reminderType.ClientId}:  {reminderType.Id} - {reminderType.Name}");
         }
     }
 }

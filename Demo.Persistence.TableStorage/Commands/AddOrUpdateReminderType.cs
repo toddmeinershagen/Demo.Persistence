@@ -1,6 +1,7 @@
 ﻿using Demo.Persistence.Core;
 using Microsoft.Azure.Cosmos.Table;
 using System.Threading.Tasks;
+using TableStorage.Abstractions.TableEntityConverters;
 
 namespace Demo.Persistence.TableStorage.Commands
 {
@@ -15,7 +16,7 @@ namespace Demo.Persistence.TableStorage.Commands
 
         public override async Task ExecuteAsync(CloudTable context)
         {
-            var adapter = new TableEntityAdapter<ReminderType>(_reminderType, _reminderType.ClientId.ToString(), _reminderType.Id.ToString());
+            var adapter = _reminderType.ToTableEntity(_reminderType.ClientId.ToString(), _reminderType.Id.ToString());
             var operation = TableOperation.InsertOrReplace(adapter);
             await context.ExecuteAsync(operation);
         }
